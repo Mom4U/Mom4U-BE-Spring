@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: mom4u
+  profiles:
+    group:
+      local: "local"
+      dev: "dev"

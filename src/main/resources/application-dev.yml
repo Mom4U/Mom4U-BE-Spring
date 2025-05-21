@@ -1,0 +1,28 @@
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: ${DEV_DB_URL}
+#    username: ${DEV_DB_USER}
+#    password: ${DEV_DB_PASSWORD}
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
