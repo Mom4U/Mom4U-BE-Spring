@@ -1,0 +1,49 @@
+package com.hanium.mom4u.global.test;
+
+import com.hanium.mom4u.global.exception.CustomException;
+import com.hanium.mom4u.global.response.CommonResponse;
+import com.hanium.mom4u.global.response.StatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/success/data")
+    public ResponseEntity<CommonResponse<?>> successTest() {
+        return ResponseEntity.ok(
+                CommonResponse.onSuccess("success")
+        );
+    }
+
+    @GetMapping("/success/null")
+    public ResponseEntity<CommonResponse<?>> successNullTest() {
+        return ResponseEntity.ok(
+                CommonResponse.onSuccess()
+        );
+    }
+
+    @GetMapping("/error")
+    public ResponseEntity<CommonResponse<?>> errorTest() {
+        return ResponseEntity.ok(
+                CommonResponse.withMessage(StatusCode.FAILURE_TEST)
+        );
+    }
+
+    @GetMapping("/error/exception")
+    public ResponseEntity<CommonResponse<?>> errorExceptionTest(
+            @RequestParam String data
+    ) throws CustomException {
+        if (data.isEmpty()) {
+            throw CustomException.of(StatusCode.FAILURE_TEST);
+        }
+        return ResponseEntity.ok(
+                CommonResponse.onSuccess(data)
+        );
+
+    }
+}
