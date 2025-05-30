@@ -1,5 +1,6 @@
 package com.hanium.mom4u.global.exception;
 
+import com.hanium.mom4u.global.response.CommonResponse;
 import com.hanium.mom4u.global.response.ErrorResponse;
 import com.hanium.mom4u.global.response.StatusCode;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,13 +12,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class CustomExceptionHandler {
+public class GlobalExceptionHandler {
 
-    // CustomException(RuntimeException)
-    @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<ErrorResponse> customException(CustomException e, HttpServletRequest request) {
+    // GeneralException(RuntimeException)
+    @ExceptionHandler(GeneralException.class)
+    protected ResponseEntity<ErrorResponse> generalException(GeneralException e, HttpServletRequest request) {
         logError(e, request);
         return ErrorResponse.toResponseEntity(e.getStatusCode());
+    }
+
+    // BussinessException(성공 응답(200)이되, 에러 메세지를 담아서 반환)
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<CommonResponse> customException(BusinessException e, HttpServletRequest request) {
+        logError(e, request);
+        return ResponseEntity.ok(CommonResponse.withMessage(e.getStatusCode()));
     }
 
     // Header missing Exception

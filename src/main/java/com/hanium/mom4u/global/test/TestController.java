@@ -1,6 +1,7 @@
 package com.hanium.mom4u.global.test;
 
-import com.hanium.mom4u.global.exception.CustomException;
+import com.hanium.mom4u.global.exception.BusinessException;
+import com.hanium.mom4u.global.exception.GeneralException;
 import com.hanium.mom4u.global.response.CommonResponse;
 import com.hanium.mom4u.global.response.StatusCode;
 import org.springframework.http.ResponseEntity;
@@ -29,17 +30,15 @@ public class TestController {
 
     @GetMapping("/error")
     public ResponseEntity<CommonResponse<?>> errorTest() {
-        return ResponseEntity.ok(
-                CommonResponse.withMessage(StatusCode.FAILURE_TEST)
-        );
+        throw BusinessException.of(StatusCode.SUCCESS_TEST);
     }
 
     @GetMapping("/error/exception")
     public ResponseEntity<CommonResponse<?>> errorExceptionTest(
             @RequestParam String data
-    ) throws CustomException {
+    ) throws GeneralException {
         if (data.isEmpty()) {
-            throw CustomException.of(StatusCode.FAILURE_TEST);
+            throw GeneralException.of(StatusCode.FAILURE_TEST);
         }
         return ResponseEntity.ok(
                 CommonResponse.onSuccess(data)
