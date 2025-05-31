@@ -5,10 +5,14 @@ import com.hanium.mom4u.domain.common.BaseEntity;
 import com.hanium.mom4u.domain.family.entity.Family;
 import com.hanium.mom4u.domain.member.common.SocialType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "member")
 public class Member extends BaseEntity {
