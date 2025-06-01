@@ -23,8 +23,7 @@ public class KakaoUserInfoResponseDto {
     public static class KakaoAccount {
         @JsonProperty("email")
         private String email;
-        @JsonProperty("name")
-        private String name;
+
         @JsonProperty("profile")
         private Profile profile;
 
