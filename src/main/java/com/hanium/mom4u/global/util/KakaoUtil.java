@@ -1,7 +1,12 @@
 package com.hanium.mom4u.global.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hanium.mom4u.global.exception.BusinessException;
+import com.hanium.mom4u.global.response.StatusCode;
 import com.hanium.mom4u.global.security.dto.response.KakaoTokenDto;
 import com.hanium.mom4u.global.security.dto.response.KakaoUserInfoResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,6 +16,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.io.IOException;
+@Slf4j
 @Component
 public class KakaoUtil {
 
@@ -56,8 +63,9 @@ public class KakaoUtil {
                     .bodyToMono(KakaoTokenDto.class)
                     .block();
         } catch (WebClientResponseException e) {
-            System.err.println("카카오 토큰 요청 실패: " + e.getResponseBodyAsString());
-            throw new RuntimeException("카카오 로그인 실패: " + e.getStatusCode());
+            String errorBody = e.getResponseBodyAsString();
+            String errorCode = extractKakaoErrorCode(errorBody); // KakaoLoginService의 메서드와 동일
+            throw mapKakaoErrorToBusinessException(errorCode); // BusinessException으로 변환
         }
     }
 
@@ -73,5 +81,47 @@ public class KakaoUtil {
                 .retrieve()
                 .bodyToMono(KakaoUserInfoResponseDto.class)
                 .block();
+    }
+
+    // KakaoUtil에 extractKakaoErrorCode 메서드 추가
+    public String extractKakaoErrorCode(String errorBody) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(errorBody);
+            String errorCode = rootNode.path("error_code").asText();
+            if (!errorCode.isEmpty()) return errorCode;
+
+            errorCode = rootNode.path("error").asText();
+            if (!errorCode.isEmpty()) return errorCode;
+
+            String errorDescription = rootNode.path("error_description").asText();
+            if (errorDescription.contains("invalid_grant")) return "KOE320";
+
+            return "UNKNOWN_ERROR";
+        } catch (IOException ex) {
+            return "UNKNOWN_ERROR";
+        }
+    }
+
+    // KakaoUtil에 mapKakaoErrorToBusinessException 메서드 추가
+    public BusinessException mapKakaoErrorToBusinessException(String errorCode) {
+        switch (errorCode) {
+            case "KOE320":
+            case "invalid_grant":
+                return new BusinessException(StatusCode.KAKAO_AUTH_CODE_INVALID);
+            case "KOE303":
+            case "invalid_request":
+                return new BusinessException(StatusCode.KAKAO_REDIRECT_URI_MISMATCH);
+            case "KOE101":
+            case "invalid_client":
+                return new BusinessException(StatusCode.KAKAO_CLIENT_INVALID);
+            case "KOE102":
+                return new BusinessException(StatusCode.KAKAO_INVALID_REQUEST);
+            case "KOE006":
+                return new BusinessException(StatusCode.KAKAO_REDIRECT_URI_INVALID);
+            default:
+                log.error("카카오 알 수 없는 에러 코드: {}", errorCode);
+                return new BusinessException(StatusCode.KAKAO_SERVER_ERROR);
+        }
     }
 }
