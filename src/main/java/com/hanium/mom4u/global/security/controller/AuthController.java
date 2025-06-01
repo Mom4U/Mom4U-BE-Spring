@@ -33,8 +33,6 @@ public class AuthController {
                                               "httpStatus": 200,
                                               "message": "success",
                                               "data": {
-                                                "accessToken": "eyJhbGciOiJIUz...",
-                                                "refreshToken": "eyJhbGciOiJIUz...",
                                                 "email": "user@example.com",
                                                 "name": "홍길동",
                                                 "socialType": "KAKAO"
