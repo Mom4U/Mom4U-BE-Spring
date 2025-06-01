@@ -25,8 +25,12 @@ public class JwtTokenProvider {
 
     private Key key;
 
-    // 토큰 유효시간 (예: 1시간)
-    private final long tokenValidityInMilliseconds = 1000L * 60 * 60;
+    // access, refresh 토큰 만료 시간(초 단위)
+    @Value("${spring.jwt.access.expiration}")
+    private long accessTokenValidityInSeconds;
+
+    @Value("${spring.jwt.refresh.expiration}")
+    private long refreshTokenValidityInSeconds;
 
     private final UserDetailsService userDetailsService;
 
@@ -45,7 +49,7 @@ public class JwtTokenProvider {
         claims.put("role", role);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
+        Date validity = new Date(now.getTime() + accessTokenValidityInSeconds);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -58,7 +62,7 @@ public class JwtTokenProvider {
     // (선택) Refresh 토큰 생성
     public String createRefreshToken(String email) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenValidityInMilliseconds * 24); // 24시간 등
+        Date validity = new Date(now.getTime() + accessTokenValidityInSeconds * 24); // 24시간 등
 
         return Jwts.builder()
                 .setSubject(email)
