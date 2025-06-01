@@ -1,8 +1,6 @@
 package com.hanium.mom4u.domain.news.common;
 
 
-
-
 public enum Category {
     HEALTH("건강"),
     FINANCIAL("지원금"),
@@ -13,9 +11,11 @@ public enum Category {
 
     private final String displayName;
 
+
     private Category(String displayName) {
-        this.displayName = displayName;
-    }
+
+        this.displayName = displayName; }
+   
 
     public String getDisplayName() {
         return displayName;
