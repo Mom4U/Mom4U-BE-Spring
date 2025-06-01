@@ -16,6 +16,24 @@ public enum StatusCode {
 
     // server
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SERVER5001", "서버에서 에러가 발생했습니다."),
+
+
+
+    INVALID_JSON_FORMAT(HttpStatus.BAD_REQUEST, "JSON400", "JSON 형식 오류"),
+    NETWORK_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NET500", "네트워크 오류 발생"),
+
+    //kakao login
+    KAKAO_AUTH_CODE_INVALID(HttpStatus.BAD_REQUEST, "KAKAO320", "카카오 인가 코드가 이미 사용되었거나 만료되었습니다."),
+    KAKAO_REDIRECT_URI_MISMATCH(HttpStatus.BAD_REQUEST, "KAKAO303", "카카오 redirect_uri가 일치하지 않습니다."),
+    KAKAO_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "KAKAO401", "카카오 로그인에 실패했습니다."),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "TE4002", "유효하지 않은 토큰입니다."),
+    // 카카오 에러 확장
+    KAKAO_CLIENT_INVALID(HttpStatus.UNAUTHORIZED, "KAKAO101", "잘못된 클라이언트 정보입니다"),
+    KAKAO_INVALID_REQUEST(HttpStatus.BAD_REQUEST, "KAKAO102", "잘못된 요청 형식입니다"),
+    KAKAO_REDIRECT_URI_INVALID(HttpStatus.BAD_REQUEST, "KAKAO006", "등록되지 않은 Redirect URI입니다"),
+    KAKAO_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "KAKAO500", "카카오 서버 오류가 발생했습니다"),
+
+
     ;
 
     private final HttpStatus httpStatus;
