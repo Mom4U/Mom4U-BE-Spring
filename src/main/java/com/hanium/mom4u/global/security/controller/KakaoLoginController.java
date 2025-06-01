@@ -105,11 +105,10 @@ public class KakaoLoginController {
     @PostMapping("/kakao")
     public CommonResponse<LoginResponseDto> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         LoginResponseDto loginResponse = kakaoLoginService.login(code);
-
-        // 쿠키에 리프레시 토큰 추가 (추가)
         refreshTokenUtil.addRefreshTokenCookie(response, loginResponse.getRefreshToken());
         return CommonResponse.onSuccess(loginResponse);
     }
+
 
 
 
