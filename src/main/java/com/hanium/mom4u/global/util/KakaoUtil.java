@@ -6,6 +6,8 @@ import com.hanium.mom4u.global.exception.BusinessException;
 import com.hanium.mom4u.global.response.StatusCode;
 import com.hanium.mom4u.global.security.dto.response.KakaoTokenDto;
 import com.hanium.mom4u.global.security.dto.response.KakaoUserInfoResponseDto;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +43,7 @@ public class KakaoUtil {
         WebClient webClient = WebClient.create(KAUTH_TOKEN_URL_HOST);
         // 코드 유효성 검증 추가
         if (code == null || code.isEmpty()) {
-            throw new IllegalArgumentException("인가 코드(code)가 유효하지 않습니다.");
+            throw new BusinessException(StatusCode.KAKAO_AUTH_CODE_INVALID);
         }
 
         System.out.println("[DEBUG] client_id: " + clientId);
@@ -124,4 +126,7 @@ public class KakaoUtil {
                 return new BusinessException(StatusCode.KAKAO_SERVER_ERROR);
         }
     }
+
+
+
 }
