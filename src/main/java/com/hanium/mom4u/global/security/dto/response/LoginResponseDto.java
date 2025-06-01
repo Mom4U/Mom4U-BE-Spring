@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginResponseDto {
+    private String accessToken;
     private String email;
     private String nickname;
     private SocialType socialType;
