@@ -1,7 +1,9 @@
 package com.hanium.mom4u.global.config;
 
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,12 +11,17 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI customOpenAPI() {
+        SecurityScheme jwtScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization");
+
         return new OpenAPI()
-                .info(new Info()
-                        .title("Dear Belly API 문서")
-                        .version("v1.0.0")
-                        .description("API 명세서 설명")
-                );
+                .components(new Components().addSecuritySchemes("JWT", jwtScheme))
+                .info(new Info().title("Dear Belly").version("v1.0"));
     }
+
 }
