@@ -62,7 +62,7 @@ public class JwtTokenProvider {
     // (선택) Refresh 토큰 생성
     public String createRefreshToken(String email) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + accessTokenValidityInSeconds * 24); // 24시간 등
+        Date validity = new Date(now.getTime() + refreshTokenValidityInSeconds);
 
         return Jwts.builder()
                 .setSubject(email)
