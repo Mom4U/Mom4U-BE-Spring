@@ -25,6 +25,7 @@ public enum StatusCode {
     KAKAO_AUTH_CODE_INVALID(HttpStatus.BAD_REQUEST, "KAKAO320", "카카오 인가 코드가 이미 사용되었거나 만료되었습니다."),
     KAKAO_REDIRECT_URI_MISMATCH(HttpStatus.BAD_REQUEST, "KAKAO303", "카카오 redirect_uri가 일치하지 않습니다."),
     KAKAO_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "KAKAO401", "카카오 로그인에 실패했습니다."),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "TE4002", "유효하지 않은 토큰입니다."),
     // 카카오 에러 확장
     KAKAO_CLIENT_INVALID(HttpStatus.UNAUTHORIZED, "KAKAO101", "잘못된 클라이언트 정보입니다"),
     KAKAO_INVALID_REQUEST(HttpStatus.BAD_REQUEST, "KAKAO102", "잘못된 요청 형식입니다"),
