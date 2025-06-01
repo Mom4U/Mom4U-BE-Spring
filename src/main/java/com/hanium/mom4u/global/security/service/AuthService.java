@@ -41,6 +41,7 @@ public class AuthService {
         String newAccessToken = jwtTokenProvider.createAccessToken(member.getEmail(), "ROLE_USER");
 
         return new LoginResponseDto(
+                newAccessToken,
                 member.getEmail(),
                 member.getName(),
                 member.getSocialType()

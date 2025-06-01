@@ -74,6 +74,7 @@ public class KakaoLoginService {
 
         // 사용자 정보 DTO 생성
         LoginResponseDto userInfoDto = new LoginResponseDto(
+                accessToken,
                 member.getEmail(),
                 member.getName(),
                 member.getSocialType()
