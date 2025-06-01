@@ -1,6 +1,7 @@
 package com.hanium.mom4u.global.security.controller;
 
 import com.hanium.mom4u.global.response.CommonResponse;
+import com.hanium.mom4u.global.security.dto.response.KakaoLoginResult;
 import com.hanium.mom4u.global.security.dto.response.LoginResponseDto;
 import com.hanium.mom4u.global.security.service.KakaoLoginService;
 import com.hanium.mom4u.global.util.RefreshTokenUtil;
@@ -104,15 +105,18 @@ public class KakaoLoginController {
     )
     @PostMapping("/kakao")
     public CommonResponse<LoginResponseDto> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
-        LoginResponseDto loginResponse = kakaoLoginService.login(code);
-        refreshTokenUtil.addRefreshTokenCookie(response, loginResponse.getRefreshToken());
-        return CommonResponse.onSuccess(loginResponse);
+        KakaoLoginResult result = kakaoLoginService.login(code);
+
+        // 1. 액세스 토큰을 쿠키에 추가
+        refreshTokenUtil.addAccessTokenCookie(response, result.getAccessToken());
+
+        // 2. 리프레시 토큰을 쿠키에 추가
+        refreshTokenUtil.addRefreshTokenCookie(response, result.getRefreshToken());
+
+        // 3. 응답 본문에는 사용자 정보만 반환
+        return CommonResponse.onSuccess(result.getUserInfo());
+    }
     }
 
 
 
-
-
-
-
-}
