@@ -14,9 +14,6 @@ import java.util.concurrent.TimeUnit;
 public class RefreshTokenUtil {
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Value("${spring.jwt.access.expiration}")
-    private long accessTokenExpiration;
-
     @Value("${spring.jwt.refresh.expiration}")
     private long refreshTokenExpiration;
 
@@ -56,23 +53,4 @@ public class RefreshTokenUtil {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
-
-
-
-    // RefreshTokenUtil.java
-    public void addAccessTokenCookie(HttpServletResponse response, String accessToken) {
-        Cookie cookie = new Cookie("accessToken", accessToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge((int) accessTokenExpiration);
-
-        // SameSite=Lax 또는 Strict 설정 (Spring Boot 2.4+)
-        response.setHeader("Set-Cookie",
-                String.format("%s=%s; Path=%s; HttpOnly; Secure; SameSite=Lax",
-                        cookie.getName(),
-                        cookie.getValue(),
-                        cookie.getPath()));
-    }
-
 }

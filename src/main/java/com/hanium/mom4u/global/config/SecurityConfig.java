@@ -1,7 +1,7 @@
 package com.hanium.mom4u.global.config;
 
-import com.hanium.mom4u.global.security.filter.JwtAuthenticationFilter;
-import com.hanium.mom4u.global.security.service.JwtTokenProvider;
+import com.hanium.mom4u.global.security.jwt.JwtAuthenticationFilter;
+import com.hanium.mom4u.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
