@@ -1,11 +1,13 @@
 package com.hanium.mom4u.global.security.service;
 
+import com.hanium.mom4u.domain.member.common.Role;
 import com.hanium.mom4u.domain.member.entity.Member;
 import com.hanium.mom4u.domain.member.repository.MemberRepository;
 import com.hanium.mom4u.global.exception.BusinessException;
 import com.hanium.mom4u.global.response.StatusCode;
 import com.hanium.mom4u.global.security.dto.response.LoginResponseDto;
 
+import com.hanium.mom4u.global.security.jwt.JwtTokenProvider;
 import com.hanium.mom4u.global.util.RefreshTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class AuthService {
         }
 
         // 3. 새 accessToken 발급 (refreshToken rotation 정책이면 새로 발급)
-        String newAccessToken = jwtTokenProvider.createAccessToken(member.getEmail(), "ROLE_USER");
+        String newAccessToken = jwtTokenProvider.createAccessToken(member.getEmail(), Role.ROLE_USER);
 
         return new LoginResponseDto(
                 newAccessToken,
