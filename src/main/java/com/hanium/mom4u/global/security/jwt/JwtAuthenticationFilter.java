@@ -1,6 +1,5 @@
-package com.hanium.mom4u.global.security.filter;
+package com.hanium.mom4u.global.security.jwt;
 
-import com.hanium.mom4u.global.security.service.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         System.out.println("Request path: " + path);
 
-        boolean shouldNotFilter = path.startsWith("/api/v1/auth/url") ||
-                path.startsWith("/api/v1/auth/url/kakao") ||
+        boolean shouldNotFilter = path.startsWith("/api/v1/auth") ||
                 path.startsWith("/swagger-ui/")||
                 path.startsWith("/v3/api-docs") ||
                 path.startsWith("/swagger-resources/")||

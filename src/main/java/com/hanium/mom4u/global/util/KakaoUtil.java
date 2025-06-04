@@ -6,8 +6,6 @@ import com.hanium.mom4u.global.exception.BusinessException;
 import com.hanium.mom4u.global.response.StatusCode;
 import com.hanium.mom4u.global.security.dto.response.KakaoTokenDto;
 import com.hanium.mom4u.global.security.dto.response.KakaoUserInfoResponseDto;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.IOException;
+
 @Slf4j
 @Component
 public class KakaoUtil {

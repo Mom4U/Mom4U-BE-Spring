@@ -1,6 +1,6 @@
-package com.hanium.mom4u.global.security.service;
+package com.hanium.mom4u.global.security.jwt;
 
-
+import com.hanium.mom4u.domain.member.common.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
 import java.util.Date;
 
 @Component
@@ -43,8 +42,8 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    // JWT 토큰 생성
-    public String createAccessToken(String email, String role) {
+    // AccessToken 생성
+    public String createAccessToken(String email, Role role) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
@@ -59,7 +58,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // (선택) Refresh 토큰 생성
+    // RefreshToken 생성
     public String createRefreshToken(String email) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + refreshTokenValidityInSeconds);

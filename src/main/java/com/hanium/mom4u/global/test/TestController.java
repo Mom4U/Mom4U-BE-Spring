@@ -30,7 +30,7 @@ public class TestController {
 
     @GetMapping("/error")
     public ResponseEntity<CommonResponse<?>> errorTest() {
-        throw BusinessException.of(StatusCode.SUCCESS_TEST);
+        throw BusinessException.of(StatusCode.FAILURE_TEST);
     }
 
     @GetMapping("/error/exception")

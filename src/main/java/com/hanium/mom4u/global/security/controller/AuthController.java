@@ -6,15 +6,17 @@ import com.hanium.mom4u.global.security.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth API Controller")
 public class AuthController {
 
     private final AuthService authService;
@@ -27,20 +29,7 @@ public class AuthController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Access Token 재발급 성공",
-                            content = @Content(mediaType = "application/json",
-                                    examples = @ExampleObject(value = """
-                                            {
-                                              "httpStatus": 200,
-                                              "message": "success",
-                                              "data": {
-                                                "email": "user@example.com",
-                                                "name": "홍길동",
-                                                "socialType": "KAKAO"
-                                              },
-                                              "success": true
-                                            }
-                                            """)
-                            )
+                            content = @Content(schema = @Schema(implementation = LoginResponseDto.class))
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -87,8 +76,7 @@ public class AuthController {
     )
     @PostMapping("/refresh")
     public CommonResponse<LoginResponseDto> reissue(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken,
-            HttpServletResponse response
+            @CookieValue(value = "refreshToken", required = false) String refreshToken
     ) {
         LoginResponseDto dto = authService.reissue(refreshToken);
         return CommonResponse.onSuccess(dto);
