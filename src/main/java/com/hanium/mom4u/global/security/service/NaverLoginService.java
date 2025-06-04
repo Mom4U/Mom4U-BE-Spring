@@ -29,7 +29,7 @@ public class NaverLoginService {
 
     @Transactional
     public LoginResponseDto loginWithNaver(HttpServletResponse response, String code, String state) {
-        NaverProfileResponseDto profile = naverUtil.findProfile(naverUtil.getAccessToken(code, state).getAccessToken());
+        NaverProfileResponseDto profile = naverUtil.findProfile(naverUtil.getToken(code, state).getAccessToken());
         Member member = memberRepository.findByEmailAndSocialType(profile.getResponse().email, SocialType.NAVER)
                 .orElseGet(() -> {
                     Member newMember = Member.builder()

@@ -51,7 +51,7 @@ public class NaverUtil {
         );
     }
 
-    public NaverTokenDto getAccessToken(String code, String state) {
+    public NaverTokenDto getToken(String code, String state) {
 
         // RequestBody (param)
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
